@@ -29,13 +29,20 @@ class nodejs(
     }
 
     'Ubuntu': {
-      include 'apt'
+      #include 'apt'
 
       # Only use PPA when necessary.
-      if $::lsbdistcodename != 'Precise'{
-        apt::ppa { 'ppa:chris-lea/node.js':
-          before => Anchor['nodejs::repo'],
-        }
+      #if $::lsbdistcodename != 'Precise'{
+      #  apt::ppa { 'ppa:chris-lea/node.js':
+      #    before => Anchor['nodejs::repo'],
+      #  }
+      
+      file { '/etc/apt/sources.list.d/nodejs-ppa.list':
+        ensure => present,
+        owner => 'root',
+        group => 'root',
+        mode => '0444',
+        content => "deb http://ppa.launchpad.net/chris-lea/ppa/node.js $::lsbdistcodename main",
       }
     }
 
