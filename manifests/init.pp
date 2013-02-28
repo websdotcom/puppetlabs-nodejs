@@ -37,12 +37,28 @@ class nodejs(
       #    before => Anchor['nodejs::repo'],
       #  }
       
+      file { '/etc/apt/ppa-chris-lea.key':
+        owner => 'root',
+        group => 'root',
+        mode => '0444',
+        source => 'puppet:///modules/nodejs/ppa-chris-lea.key',
+        before => Anchor['nodejs::repo'],
+      }
+
+      exec { 'ppa-chris-lea-key':
+        command => '/usr/bin/apt-key add /etc/apt/ppa-chris-lea.key && apt-get update',
+        refreshonly => true,
+        subscribe => File['/etc/apt/ppa-chris-lea.key'],
+        before => Anchor['nodejs::repo'],
+      }
+      
       file { '/etc/apt/sources.list.d/nodejs-ppa.list':
         ensure => present,
         owner => 'root',
         group => 'root',
         mode => '0444',
         content => "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu $::lsbdistcodename main",
+        before => Anchor['nodejs::repo'],
       }
     }
 
