@@ -42,7 +42,7 @@ class nodejs(
         owner => 'root',
         group => 'root',
         mode => '0444',
-        content => "deb http://ppa.launchpad.net/chris-lea/node.js $::lsbdistcodename main",
+        content => "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu $::lsbdistcodename main",
       }
     }
 
